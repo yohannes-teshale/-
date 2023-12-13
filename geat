@@ -10,7 +10,7 @@ initialize_geat() {
 
 save_workspace() {
   release_dir="$GEAT_DIR"
-  zip -r "$release_dir/$CONTROLLED_VERSION_FILE" .
+  zip -r "$release_dir/$CONTROLLED_VERSION_FILE" . >/dev/null 2>&1
   echo "Geat tekholisu."
 }
 
