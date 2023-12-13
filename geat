@@ -1,0 +1,42 @@
+#!/bin/bash
+
+GEAT_DIR=".ገዓት"
+CONTROLLED_VERSION_FILE="controlledVersion.zip"
+
+initialize_geat() {
+  mkdir -p "$GEAT_DIR"
+  echo "Geat initialized."
+}
+
+save_workspace() {
+  release_dir="$GEAT_DIR"
+  zip -r "$release_dir/$CONTROLLED_VERSION_FILE" .
+  echo "Geat tekholisu."
+}
+
+rollback_workspace() {
+  temp_dir=$(mktemp -d)
+  unzip  "$GEAT_DIR/$CONTROLLED_VERSION_FILE" -d "$temp_dir" >/dev/null 2>&1
+
+  save_workspace
+
+  rm -rf ./*
+  cp -r "$temp_dir/" .
+  rm -r "$temp_dir"
+  echo "Geat temelisu."
+}
+
+case $1 in
+  -y|--yibarek)
+    initialize_geat
+    ;;
+  -k|--kholis)
+    save_workspace
+    ;;
+  -m|--miles)
+    rollback_workspace
+    ;;
+  *)
+    echo "Usage: geat ----yibarek,-y | geat --kholis,-k | geat --miles,-m"
+    ;;
+esac
